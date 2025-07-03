@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap');
+
+/* Animação de pulo para os blocos */
+@keyframes pular {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Estilo geral do corpo */
+body {
+  margin: 0;
+  font-family: 'Arial Rounded MT Bold', sans-serif;
+  background: linear-gradient(to bottom, #f9d776 50%, #a8d3f5 50%);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Cabeçalho */
+header nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem;
+}
+
+.menu-text {
+  margin-right: 1rem;
+  font-size: 1rem;
+}
+
+.menu-icon div {
+  width: 20px;
+  height: 2px;
+  background-color: black;
+  margin: 3px 0;
+}
+
+/* Personagens */
+.character {
+  position: absolute;
+  z-index: 2;
+}
+
+.character img {
+  max-width: 180px;
+  animation: pular 1s ease-in-out infinite;
+}
+
+.character-left {
+  top: 60px;
+  left: 20px;
+}
+
+.character-right {
+  bottom: 30px;
+  right: 20px;
+}
+
+/* Nuvem central */
+.cloud {
+  background: white;
+  border-radius: 300px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+  padding: 5rem 6rem;
+  text-align: center;
+  max-width: 800px;
+  margin: 6rem auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Título principal */
+.cloud h1 {
+  font-size: 2.8rem;
+  color: #db8cbf;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+/* Subtítulo */
+.cloud p {
+  font-size: 2rem;
+  color: #3c73a8;
+  margin-bottom: 2rem;
+}
+
+/* Botão iniciar */
+.start-button {
+  background-color: #f48fb1; /* rosa mais vibrante */
+  color: white;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 20px;
+  padding: 15px 35px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.start-button:hover {
+  background-color: #ec407a;
+  transform: scale(1.05);
+}
+
+/* Menu estilo dropdown */
+.menu-container {
+  position: relative;
+  padding: 10px;
+}
+
+.menu-icon {
+  cursor: pointer;
+  width: 30px;
+}
+
+.menu-icon div {
+  width: 30px;
+  height: 4px;
+  background: #fff;
+  margin: 4px 0;
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+  display: none;
+  background: #fff;
+  border: 1px solid #ccc;
+  position: absolute;
+  z-index: 999;
+}
+
+.menu-list li {
+  padding: 10px;
+}
+
+.menu-list li a {
+  text-decoration: none;
+  color: #3c73a8;
+  font-weight: bold;
+}
+
+/* Mostrar menu ao clicar */
+.menu-container:hover .menu-list {
+  display: block;
+}
+
+
+    
+  

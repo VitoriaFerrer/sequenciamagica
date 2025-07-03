@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Fredoka', sans-serif;
+  background-color: #d2ecff;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.rotinas {
+  width: 25%;
+  background-color: #f8b1c2;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.rotinas h3 {
+  text-align: center;
+  color: #3c73a8;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 140px;
+  height: 180px;
+  cursor: grab;
+  transition: transform 0.2s;
+}
+
+.item:hover {
+  transform: scale(1.05);
+}
+
+.item img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+
+.rotina-label {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #045ea8;
+  text-align: center;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.conteudo {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.sequencia {
+  background-color: #a7d7fc;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.sequencia h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #004a80;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.data-dia {
+  text-align: right;
+  background: #f8e599;
+  font-weight: bold;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.area-sequencia {
+  height: 300px;
+  background: white;
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  overflow-y: auto;
+  border: 2px dashed #ccc;
+}
+
+.anteriores h3 {
+  font-size: 20px;
+  color: #3c73a8;
+  margin-bottom: 10px;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.btn-sequencia {
+  background-color: #f7d774;
+  color: #005cb2;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 5px 0;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.btn-sequencia:hover {
+  background-color: #ffe082;
+}
+
+button {
+  background-color: #f49ab7;
+  color: white;
+  font-weight: bold;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  margin-top: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Fredoka', sans-serif;
+}
+
+button:hover {
+  background-color: #f06292;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  .rotinas {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .conteudo {
+    padding: 10px;
+  }
+  .item {
+    width: 120px;
+    height: 160px;
+  }
+  .item img {
+    width: 70px;
+    height: 70px;
+  }
+  .rotina-label {
+    font-size: 16px;
+  }
+}
