@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Minha Sequência</title>
+  <link rel="stylesheet" href="css/estilo-sequencia.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Rotinas -->
+    <aside class="rotinas">
+      <h3>ROTINAS</h3>
+      <div class="item" draggable="true">
+        <img src="img/acordar.png" alt="Acordar" />
+        <div class="rotina-label">Acordar</div>
+      </div>
+      <div class="item" draggable="true">
+        <img src="img/tomar-banho.png" alt="Tomar banho" />
+        <div class="rotina-label">Tomar banho</div>
+      </div>
+      <div class="item" draggable="true">
+        <img src="img/escovar-dentes.png" alt="Escovar os dentes" />
+        <div class="rotina-label">Escovar os dentes</div>
+      </div>
+      <div class="item" draggable="true">
+        <img src="img/colocar-roupa.png" alt="Colocar a roupa" />
+        <div class="rotina-label">Colocar a roupa</div>
+      </div>
+      <div class="item" draggable="true">
+        <img src="img/tomar-cafe.png" alt="Tomar café" />
+        <div class="rotina-label">Tomar café</div>
+      </div>
+      <div class="item" draggable="true">
+        <img src="img/psicologo.png" alt="Psicólogo" />
+        <div class="rotina-label">Psicólogo</div>
+      </div>
+      <div class="item" draggable="true">
+        <img src="img/psicopedagoga.png" alt="Psicopedagoga" />
+        <div class="rotina-label">Psicopedagoga</div>
+      </div>
+    </aside>
+
+    <!-- Conteúdo -->
+    <main class="conteudo">
+      <section class="sequencia">
+        <h2>MINHA SEQUÊNCIA</h2>
+        <div id="data-dia" class="data-dia"></div>
+        <div id="area-sequencia" class="area-sequencia" ondragover="event.preventDefault()" ondrop="soltar(event)"></div>
+        <button onclick="salvarSequencia()">Salvar Sequência</button>
+      </section>
+
+      <section class="anteriores">
+        <li><a href="rotinas-salvas.html">Minhas Sequências Salvas</a></li>
+        <div id="anteriores-lista"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const imagens = {
+      "Acordar": "acordar.png",
+      "Tomar banho": "tomar-banho.png",
+      "Escovar os dentes": "escovar-dentes.png",
+      "Colocar a roupa": "colocar-roupa.png",
+      "Tomar café": "tomar-cafe.png",
+      "Psicólogo": "psicologo.png",
+      "Psicopedagoga": "psicopedagoga.png"
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const hoje = new Date().toLocaleDateString("pt-BR", {
+        day: "2-digit", month: "short", year: "numeric"
+      });
+      document.getElementById("data-dia").innerText = `DIA ${hoje.toUpperCase()}`;
+      carregarSequenciasAnteriores();
+
+      document.querySelectorAll(".item").forEach(el => {
+        el.addEventListener("dragstart", e => {
+          e.dataTransfer.setData("text/plain", el.querySelector(".rotina-label").innerText);
+        });
+      });
+    });
+
+    function soltar(e) {
+      const nome = e.dataTransfer.getData("text/plain");
+      if (!nome || !imagens[nome]) return;
+      const bloco = document.createElement("div");
+      bloco.className = "item";
+      bloco.innerHTML = `
+        <img src="img/${imagens[nome]}" alt="${nome}" />
+        <div class='rotina-label'>${nome}</div>`;
+      bloco.setAttribute("draggable", "false");
+      document.getElementById("area-sequencia").appendChild(bloco);
+    }
+
+    function salvarSequencia() {
+      const hoje = new Date().toISOString().split("T")[0];
+      const elementos = document.querySelectorAll("#area-sequencia .rotina-label");
+      const sequencia = Array.from(elementos).map(el => el.innerText);
+      localStorage.setItem(`sequencia-${hoje}`, JSON.stringify(sequencia));
+      alert("Sequência salva com sucesso!");
+      carregarSequenciasAnteriores();
+    }
+
+    function carregarSequenciasAnteriores() {
+      const lista = document.getElementById("anteriores-lista");
+      lista.innerHTML = "";
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith("sequencia-")) {
+          const data = key.replace("sequencia-", "");
+          const btn = document.createElement("div");
+          btn.innerText = `DIA ${data}`;
+          btn.classList.add("btn-sequencia");
+          btn.onclick = () => {
+            const json = localStorage.getItem(key);
+            const sequencia = JSON.parse(json);
+            const area = document.getElementById("area-sequencia");
+            area.innerHTML = "";
+            sequencia.forEach(nome => {
+              const bloco = document.createElement("div");
+              bloco.className = "item";
+              bloco.innerHTML = `
+                <img src="img/${imagens[nome]}" alt="${nome}" />
+                <div class='rotina-label'>${nome}</div>`;
+              area.appendChild(bloco);
+            });
+          };
+          lista.appendChild(btn);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
+
+

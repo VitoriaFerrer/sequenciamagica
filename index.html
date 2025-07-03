@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sequência Mágica</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="menu-container">
+        <span class="menu-text">MENU</span>
+        <div class="menu-icon" onclick="toggleMenu()">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <ul class="menu-list" id="menuList">
+        <li><a href="rotinas-salvas.html">Minhas Sequências Salvas</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+  <!-- Personagem Azul -->
+  <div class="character character-left">
+    <img src="img/blocoazul.png" alt="Bloco Azul" />
+  </div>
+
+  <!-- Personagem Amarelo -->
+  <div class="character character-right">
+    <img src="img/blocoamarelo.png" alt="Bloco Amarelo" />
+  </div>
+
+  <!-- Nuvem Central -->
+  <div class="cloud">
+    <h1>SEQUÊNCIA MÁGICA</h1>
+    <p>Aprendizagem em blocos para autistas</p>
+    <a href="minha-sequencia.html" class="start-button">INICIAR</a>
+  </div>
+
+  <script>
+    function iniciar() {
+      alert("Iniciando a sequência mágica...");
+      // Aqui você pode redirecionar, ex:
+      // window.location.href = "pagina-seguinte.html";
+    }
+  function toggleMenu() {
+    const menu = document.getElementById("menuList");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+  }
+</script>
+</body>
+</html>

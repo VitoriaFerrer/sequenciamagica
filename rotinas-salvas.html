@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotinas Salvas</title>
+  <link rel="stylesheet" href="css/estilo-sequencia.css">
+</head>
+<body>
+  <div class="container">
+    <main class="conteudo">
+      <section class="sequencia">
+        <h2>ROTINAS SALVAS</h2>
+        <div id="lista-rotinas-salvas"></div>
+        <button onclick="voltarParaIndex()">Voltar para Início</button>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const imagens = {
+      "Acordar": "acordar.png",
+      "Tomar banho": "tomar-banho.png",
+      "Escovar os dentes": "escovar-dentes.png",
+      "Colocar a roupa": "colocar-roupa.png",
+      "Tomar café": "tomar-cafe.png",
+      "Psicólogo": "psicologo.png",
+      "Psicopedagoga": "psicopedagoga.png"
+    };
+
+    document.addEventListener("DOMContentLoaded", carregarRotinasSalvas);
+
+    function carregarRotinasSalvas() {
+      const lista = document.getElementById("lista-rotinas-salvas");
+      lista.innerHTML = "";
+
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith("sequencia-")) {
+          const data = key.replace("sequencia-", "");
+          const wrapper = document.createElement("div");
+          wrapper.className = "btn-sequencia";
+
+          const btn = document.createElement("div");
+          btn.innerText = `Visualizar - DIA ${data}`;
+          btn.onclick = () => mostrarRotinaSalva(key);
+
+          const delBtn = document.createElement("button");
+          delBtn.innerText = "Apagar";
+          delBtn.style.marginLeft = "10px";
+          delBtn.onclick = () => apagarRotinaSalva(key);
+
+          wrapper.appendChild(btn);
+          wrapper.appendChild(delBtn);
+
+          lista.appendChild(wrapper);
+        }
+      });
+    }
+
+    function mostrarRotinaSalva(key) {
+      const json = localStorage.getItem(key);
+      const sequencia = JSON.parse(json);
+
+      const popup = document.createElement("div");
+      popup.style.position = "fixed";
+      popup.style.top = "0";
+      popup.style.left = "0";
+      popup.style.width = "100vw";
+      popup.style.height = "100vh";
+      popup.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
+      popup.style.display = "flex";
+      popup.style.justifyContent = "center";
+      popup.style.alignItems = "center";
+      popup.style.zIndex = "1000";
+
+      const box = document.createElement("div");
+      box.style.backgroundColor = "white";
+      box.style.padding = "20px";
+      box.style.borderRadius = "12px";
+      box.style.display = "flex";
+      box.style.flexDirection = "column";
+      box.style.alignItems = "center";
+      box.style.gap = "10px";
+      box.style.maxHeight = "80vh";
+      box.style.overflowY = "auto";
+
+      const blocosContainer = document.createElement("div");
+      blocosContainer.style.display = "flex";
+      blocosContainer.style.flexWrap = "wrap";
+      blocosContainer.style.justifyContent = "center";
+      blocosContainer.style.gap = "10px";
+
+      sequencia.forEach(nome => {
+        const bloco = document.createElement("div");
+        bloco.className = "item";
+        bloco.innerHTML = `
+          <img src="img/${imagens[nome]}" alt="${nome}" />
+          <div class='rotina-label'>${nome}</div>
+        `;
+        blocosContainer.appendChild(bloco);
+      });
+
+      const btnVoltar = document.createElement("button");
+      btnVoltar.textContent = "Voltar esta rotina";
+      btnVoltar.onclick = () => {
+        localStorage.setItem("sequencia-hoje", json);
+        alert("Rotina retornada para edição!");
+        window.location.href = "index.html";
+      };
+
+      const fechar = document.createElement("button");
+      fechar.innerText = "Fechar";
+      fechar.onclick = () => popup.remove();
+
+      box.appendChild(blocosContainer);
+      box.appendChild(btnVoltar);
+      box.appendChild(fechar);
+      popup.appendChild(box);
+      document.body.appendChild(popup);
+    }
+
+    function apagarRotinaSalva(key) {
+      if (confirm("Tem certeza que deseja apagar esta rotina?")) {
+        localStorage.removeItem(key);
+        carregarRotinasSalvas();
+      }
+    }
+
+    function voltarParaIndex() {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
