@@ -47,11 +47,11 @@
         <div id="data-dia" class="data-dia"></div>
         <div id="area-sequencia" class="area-sequencia" ondragover="event.preventDefault()" ondrop="soltar(event)"></div>
         <button onclick="salvarSequencia()">Salvar Sequência</button>
-      </section>
-
-      <section class="anteriores">
-        <li><a href="rotinas-salvas.html">Minhas Sequências Salvas</a></li>
-        <div id="anteriores-lista"></div>
+        <br />
+        <h3><a href="rotinas-salvas.html" class="link-titulo">MINHAS SEQUÊNCIAS RECENTES</a></h3>
+        <div id="lista-recente"></div>
+        <br />
+        <button onclick="desfazerUltimo()">Desfazer Último</button>
       </section>
     </main>
   </div>
@@ -67,6 +67,8 @@
       "Psicopedagoga": "psicopedagoga.png"
     };
 
+    let itensAdicionados = []; // <- Aqui armazenamos os cards
+
     document.addEventListener("DOMContentLoaded", () => {
       const hoje = new Date().toLocaleDateString("pt-BR", {
         day: "2-digit", month: "short", year: "numeric"
@@ -76,61 +78,87 @@
 
       document.querySelectorAll(".item").forEach(el => {
         el.addEventListener("dragstart", e => {
-          e.dataTransfer.setData("text/plain", el.querySelector(".rotina-label").innerText);
+          const nome = e.target.querySelector(".rotina-label").innerText;
+            e.dataTransfer.setData("text/plain", nome);
         });
       });
     });
 
     function soltar(e) {
+      e.preventDefault();
+
+      // Recupera o nome da rotina a partir do elemento arrastado
       const nome = e.dataTransfer.getData("text/plain");
-      if (!nome || !imagens[nome]) return;
-      const bloco = document.createElement("div");
-      bloco.className = "item";
-      bloco.innerHTML = `
-        <img src="img/${imagens[nome]}" alt="${nome}" />
-        <div class='rotina-label'>${nome}</div>`;
-      bloco.setAttribute("draggable", "false");
-      document.getElementById("area-sequencia").appendChild(bloco);
+      if (!nome) return;
+
+      // Clona o item a partir do nome da rotina
+      const novoItem = document.createElement("div");
+      novoItem.className = "item";
+      novoItem.setAttribute("draggable", "false");
+      novoItem.innerHTML = `
+      <img src="img/${imagens[nome]}" alt="${nome}" />
+      <div class="rotina-label">${nome}</div>
+  `;
+
+  document.getElementById("area-sequencia").appendChild(novoItem);
+  itensAdicionados.push(novoItem); // Para desfazer depois
+}
+
+
+    function desfazerUltimo() {
+      if (itensAdicionados.length > 0) {
+        const ultimo = itensAdicionados.pop();
+        ultimo.remove();
+      } else {
+        alert("Nenhum item para desfazer.");
+      }
     }
 
     function salvarSequencia() {
       const hoje = new Date().toISOString().split("T")[0];
-      const elementos = document.querySelectorAll("#area-sequencia .rotina-label");
+      const elementos = document.querySelectorAll("#area-sequencia .item .rotina-label");
       const sequencia = Array.from(elementos).map(el => el.innerText);
-      localStorage.setItem(`sequencia-${hoje}`, JSON.stringify(sequencia));
+      const json = JSON.stringify(sequencia);
+      localStorage.setItem(`sequencia-${hoje}`, json);
       alert("Sequência salva com sucesso!");
       carregarSequenciasAnteriores();
     }
 
     function carregarSequenciasAnteriores() {
-      const lista = document.getElementById("anteriores-lista");
-      lista.innerHTML = "";
-      Object.keys(localStorage).forEach(key => {
-        if (key.startsWith("sequencia-")) {
-          const data = key.replace("sequencia-", "");
-          const btn = document.createElement("div");
-          btn.innerText = `DIA ${data}`;
-          btn.classList.add("btn-sequencia");
-          btn.onclick = () => {
-            const json = localStorage.getItem(key);
-            const sequencia = JSON.parse(json);
-            const area = document.getElementById("area-sequencia");
-            area.innerHTML = "";
-            sequencia.forEach(nome => {
-              const bloco = document.createElement("div");
-              bloco.className = "item";
-              bloco.innerHTML = `
-                <img src="img/${imagens[nome]}" alt="${nome}" />
-                <div class='rotina-label'>${nome}</div>`;
-              area.appendChild(bloco);
-            });
-          };
-          lista.appendChild(btn);
-        }
-      });
+      // Essa função está aqui como placeholder, se quiser incluir a lista de dias salvos no futuro
     }
+
+    function carregarSequenciasRecentes() {
+    const lista = document.getElementById("lista-recente");
+    lista.innerHTML = "";
+
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith("sequencia-")) {
+        const data = key.replace("sequencia-", "");
+        const btn = document.createElement("button");
+        btn.innerText = `Dia ${data}`;
+        btn.className = "btn-rotina";
+        btn.onclick = () => {
+          const json = localStorage.getItem(key);
+          const sequencia = JSON.parse(json);
+          localStorage.setItem("sequencia-hoje", JSON.stringify(sequencia));
+          window.location.reload(); // Atualiza a página com a nova sequência
+        };
+        lista.appendChild(btn);
+      }
+    });
+  }
+  // Chama ao carregar a página
+  document.addEventListener("DOMContentLoaded", carregarSequenciasRecentes);
   </script>
+
+<footer style="text-align: center; padding: 20px; font-size: 14px; color: #3c73a8;">
+  Desenvolvido por Vitória Ferreira 2025
+</footer>
 </body>
 </html>
+
+
+
 
 
