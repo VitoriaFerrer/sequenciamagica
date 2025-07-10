@@ -46,10 +46,18 @@
       // Aqui você pode redirecionar, ex:
       // window.location.href = "pagina-seguinte.html";
     }
-  function toggleMenu() {
-    const menu = document.getElementById("menuList");
-    menu.style.display = menu.style.display === "block" ? "none" : "block";
-  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const menu = document.querySelector('.menu-container');
+    if (menu) {
+      menu.addEventListener('click', () => {
+        menu.classList.toggle('active');
+      });
+    }
+  });
 </script>
+</script>
+<footer class="rodape">
+  Desenvolvido por Vitória Ferreira 2025
+</footer>
 </body>
 </html>
