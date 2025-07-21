@@ -52,7 +52,10 @@
         <div id="lista-recente"></div>
         <br />
         <button onclick="desfazerUltimo()">Desfazer Último</button>
+        <br /> <button onclick="recarregarPagina()">Recarregar Página</button>
+
       </section>
+      
     </main>
   </div>
 
@@ -141,7 +144,10 @@
         btn.onclick = () => {
           const json = localStorage.getItem(key);
           const sequencia = JSON.parse(json);
-          localStorage.setItem("sequencia-hoje", JSON.stringify(sequencia));
+          localStorage.setItem("sequencia-editar", JSON.stringify({
+          data: data,
+          sequencia: sequencia
+      }));
           window.location.reload(); // Atualiza a página com a nova sequência
         };
         lista.appendChild(btn);
@@ -150,6 +156,30 @@
   }
   // Chama ao carregar a página
   document.addEventListener("DOMContentLoaded", carregarSequenciasRecentes);
+  // Verifica se há sequência para editar
+ const dadosEdicao = JSON.parse(localStorage.getItem("sequencia-editar"));
+ if (dadosEdicao && dadosEdicao.sequencia) {
+  document.getElementById("data-dia").innerText = `DIA ${new Date(dadosEdicao.data).toLocaleDateString("pt-BR", {
+    day: "2-digit", month: "short", year: "numeric"
+  }).toUpperCase()}`;
+  dadosEdicao.sequencia.forEach(nome => {
+    const novoItem = document.createElement("div");
+    novoItem.className = "item";
+    novoItem.setAttribute("draggable", "false");
+    novoItem.innerHTML = `
+      <img src="img/${imagens[nome]}" alt="${nome}" />
+      <div class="rotina-label">${nome}</div>
+    `;
+    document.getElementById("area-sequencia").appendChild(novoItem);
+    itensAdicionados.push(novoItem);
+  });
+  // Salva a data atual em uma variável global para uso posterior
+  window.dataEdicao = dadosEdicao.data;
+}
+
+function recarregarPagina() {
+  window.location.reload();
+}
   </script>
 
 <footer style="text-align: center; padding: 20px; font-size: 14px; color: #3c73a8;">
